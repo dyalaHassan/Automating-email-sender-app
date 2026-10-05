@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        One World IP - مرسل البريد الإلكتروني
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='app.css') }}"
+    >
+
+</head>
+
+<body>
+
+    <header class="top-header">
+
+        <div class="logo-wrapper">
+
+            <img
+                src="{{ url_for('static', filename='logo.png') }}"
+                class="logo"
+                alt="One World Intellectual Property"
+            >
+
+        </div>
+
+    </header>
+
+    <div class="brand-line"></div>
+
+
+    <main class="page-container">
+
+        <div class="app-title">
+
+            <h1>
+                مرسل البريد الإلكتروني
+            </h1>
+
+            <p>
+                إرسال رسائل مخصصة بطريقة سهلة ومنظمة
+            </p>
+
+        </div>
+
+
+        {% if current_step %}
+
+        <div class="steps">
+
+            {% for number, name in [
+                (1, 'المستلمين'),
+                (2, 'الرسالة'),
+                (3, 'الإعدادات'),
+                (4, 'المعاينة'),
+                (5, 'الإرسال')
+            ] %}
+
+                <div
+                    class="step-item
+                    {% if current_step == number %}
+                        active
+                    {% elif current_step > number %}
+                        completed
+                    {% endif %}
+                    "
+                >
+
+                    <div class="step-circle">
+
+                        {% if current_step > number %}
+                            ✓
+                        {% else %}
+                            {{ number }}
+                        {% endif %}
+
+                    </div>
+
+                    <span>
+                        {{ name }}
+                    </span>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="alert {{ category }}">
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+
+    <script
+        src="{{ url_for('static', filename='app.js') }}"
+    ></script>
+
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card">
+
+    <div class="step-label">
+        الخطوة 1 من 5
+    </div>
+
+    <h2>
+        رفع ملف المستلمين
+    </h2>
+
+    <p class="description">
+        ارفع ملف Excel الذي يحتوي على بيانات الأشخاص
+        الذين تريد إرسال الرسائل لهم.
+    </p>
+
+    <p class="small-help">
+        يمكن أن يحتوي الملف على الاسم، البريد الإلكتروني،
+        الشركة، الدولة وأي معلومات أخرى تريد استخدامها
+        داخل الرسالة.
+    </p>
+
+
+    <form
+        method="POST"
+        enctype="multipart/form-data"
+    >
+
+        <label class="upload-box">
+
+            <span class="upload-icon">
+                ↑
+            </span>
+
+            <strong>
+                اختر ملف Excel
+            </strong>
+
+            <span id="excel-file-name">
+                لم يتم اختيار ملف
+            </span>
+
+            <input
+                type="file"
+                name="excel_file"
+                accept=".xlsx,.xls"
+                required
+                onchange="showFileName(this, 'excel-file-name')"
+            >
+
+        </label>
+
+
+        <button
+            class="primary-btn"
+            type="submit"
+        >
+            التالي
+            <span>←</span>
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

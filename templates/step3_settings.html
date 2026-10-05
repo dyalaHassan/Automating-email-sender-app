@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card">
+
+    <div class="step-label">
+        الخطوة 3 من 5
+    </div>
+
+    <h2>
+        إعداد الرسالة
+    </h2>
+
+    <p class="description">
+        أكمل المعلومات الأساسية قبل معاينة الرسالة.
+    </p>
+
+
+    <form
+        method="POST"
+        enctype="multipart/form-data"
+    >
+
+        <div class="form-group">
+
+            <label>
+                عمود البريد الإلكتروني
+            </label>
+
+            <select
+                name="email_col"
+                required
+            >
+
+                <option value="">
+                    اختر العمود
+                </option>
+
+                {% for column in columns %}
+
+                    <option
+                        value="{{ column }}"
+                        {% if column == detected_email_col %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ column }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+            {% if detected_email_col %}
+
+                <small>
+                    ✓ تم اكتشاف عمود البريد الإلكتروني تلقائياً.
+                </small>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                عنوان الرسالة
+            </label>
+
+            <input
+                type="text"
+                name="subject"
+                placeholder="مثال: Meeting with <<Company>>"
+                required
+            >
+
+            <small>
+                يمكنك استخدام حقول Excel داخل العنوان أيضاً.
+            </small>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                CC
+                <span class="optional">
+                    اختياري
+                </span>
+            </label>
+
+            <input
+                type="email"
+                name="cc_address"
+                placeholder="example@oneworldip.com"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                المرفقات
+                <span class="optional">
+                    اختياري
+                </span>
+            </label>
+
+            <input
+                class="normal-file"
+                type="file"
+                name="attachments"
+                multiple
+            >
+
+            <small>
+                سيتم إرفاق هذه الملفات مع جميع الرسائل.
+            </small>
+
+        </div>
+
+
+        <div class="button-row">
+
+            <a
+                href="{{ url_for('step2') }}"
+                class="secondary-btn"
+            >
+                السابق
+            </a>
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+                التالي
+                <span>←</span>
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card">
+
+    <div class="success-icon">
+        ✓
+    </div>
+
+    <h2>
+        انتهت عملية الإرسال
+    </h2>
+
+    <p class="description">
+        تم الانتهاء من معالجة جميع الرسائل المحددة.
+    </p>
+
+
+    <div class="stats three">
+
+        <div class="stat good">
+
+            <strong>
+                {{ sent_count }}
+            </strong>
+
+            <span>
+                تم الإرسال
+            </span>
+
+        </div>
+
+
+        <div class="stat warning">
+
+            <strong>
+                {{ failed_count }}
+            </strong>
+
+            <span>
+                فشل
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <strong>
+                {{ total }}
+            </strong>
+
+            <span>
+                الإجمالي
+            </span>
+
+        </div>
+
+    </div>
+
+
+    {% if failed_count > 0 %}
+
+        <details class="problem-details">
+
+            <summary>
+                عرض الرسائل التي فشل إرسالها
+            </summary>
+
+            {% for item in log %}
+
+                {% if item.status == "فشل" %}
+
+                    <div class="problem-row">
+
+                        <strong>
+                            الصف {{ item.row }}
+                        </strong>
+
+                        <span dir="ltr">
+                            {{ item.email }}
+                        </span>
+
+                        <span>
+                            {{ item.reason }}
+                        </span>
+
+                    </div>
+
+                {% endif %}
+
+            {% endfor %}
+
+        </details>
+
+    {% endif %}
+
+
+    <a
+        href="{{ url_for('reset') }}"
+        class="primary-btn anchor-btn"
+    >
+        بدء عملية جديدة
+    </a>
+
+</div>
+
+{% endblock %}

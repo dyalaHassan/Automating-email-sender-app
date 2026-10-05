@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card">
+
+    <div class="step-label">
+        الخطوة 5 من 5
+    </div>
+
+    <h2>
+        جاهز للإرسال
+    </h2>
+
+    <p class="description">
+        راجع العدد وحدد الأشخاص الذين تريد إرسال
+        الرسائل لهم.
+    </p>
+
+
+    <div class="stats">
+
+        <div class="stat good">
+
+            <strong>
+                {{ valid_count }}
+            </strong>
+
+            <span>
+                جاهزة للإرسال
+            </span>
+
+        </div>
+
+
+        <div class="stat warning">
+
+            <strong>
+                {{ invalid_count }}
+            </strong>
+
+            <span>
+                تحتاج إلى مراجعة
+            </span>
+
+        </div>
+
+    </div>
+
+
+    {% if invalid_rows %}
+
+        <details class="problem-details">
+
+            <summary>
+                عرض الصفوف التي لن يتم الإرسال لها
+            </summary>
+
+            <div class="problem-list">
+
+                {% for row in invalid_rows %}
+
+                    <div class="problem-row">
+
+                        <strong>
+                            الصف {{ row.row }}
+                        </strong>
+
+                        <span>
+                            {{ row.email or 'لا يوجد بريد' }}
+                        </span>
+
+                        <span>
+                            {{ row.reason }}
+                        </span>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </details>
+
+    {% endif %}
+
+
+    <form
+        method="POST"
+        id="send-options-form"
+    >
+
+        <div class="send-options">
+
+            <label class="radio-card">
+
+                <input
+                    type="radio"
+                    name="send_type"
+                    value="all"
+                    checked
+                    onchange="updateSendOptions()"
+                >
+
+                <div>
+
+                    <strong>
+                        إرسال لجميع المستلمين
+                    </strong>
+
+                    <span>
+                        {{ valid_count }} رسالة
+                    </span>
+
+                </div>
+
+            </label>
+
+
+            <label class="radio-card">
+
+                <input
+                    type="radio"
+                    name="send_type"
+                    value="first"
+                    onchange="updateSendOptions()"
+                >
+
+                <div>
+
+                    <strong>
+                        إرسال لأول عدد محدد
+                    </strong>
+
+                </div>
+
+            </label>
+
+
+            <div
+                id="first-options"
+                class="sub-options hidden"
+            >
+
+                <label>
+                    عدد الرسائل
+                </label>
+
+                <input
+                    type="number"
+                    name="first_n"
+                    min="1"
+                    max="{{ valid_count }}"
+                    value="10"
+                >
+
+            </div>
+
+
+            <label class="radio-card">
+
+                <input
+                    type="radio"
+                    name="send_type"
+                    value="range"
+                    onchange="updateSendOptions()"
+                >
+
+                <div>
+
+                    <strong>
+                        إرسال لنطاق معين من الصفوف
+                    </strong>
+
+                </div>
+
+            </label>
+
+
+            <div
+                id="range-options"
+                class="sub-options hidden"
+            >
+
+                <div>
+
+                    <label>
+                        من الصف
+                    </label>
+
+                    <input
+                        type="number"
+                        name="start_row"
+                        min="1"
+                        max="{{ total_rows }}"
+                        value="1"
+                    >
+
+                </div>
+
+                <div>
+
+                    <label>
+                        إلى الصف
+                    </label>
+
+                    <input
+                        type="number"
+                        name="end_row"
+                        min="1"
+                        max="{{ total_rows }}"
+                        value="{{ total_rows }}"
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="button-row">
+
+            <a
+                href="{{ url_for('step4') }}"
+                class="secondary-btn"
+            >
+                السابق
+            </a>
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+                متابعة للإرسال
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<div
+    id="confirmationModal"
+    class="modal"
+>
+
+    <div class="modal-content">
+
+        <div class="confirm-icon">
+            !
+        </div>
+
+        <h2>
+            تأكيد الإرسال
+        </h2>
+
+        <p>
+            سيتم إرسال الرسائل باستخدام حساب Outlook
+            المفتوح حالياً على هذا الجهاز.
+        </p>
+
+        <p>
+            بعد الإرسال لا يمكن التراجع.
+        </p>
+
+        <div class="button-row">
+
+            <button
+                type="button"
+                class="secondary-btn"
+                onclick="closeConfirmation()"
+            >
+                إلغاء
+            </button>
+
+            <form
+                method="POST"
+                action="{{ url_for('send_emails') }}"
+            >
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    نعم، إرسال الآن
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

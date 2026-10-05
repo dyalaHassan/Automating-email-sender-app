@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card wide-card">
+
+    <div class="step-label">
+        الخطوة 2 من 5
+    </div>
+
+    <h2>
+        رفع نموذج الرسالة
+    </h2>
+
+    <p class="description">
+        اكتب رسالتك في Word بالطريقة المعتادة،
+        ثم ارفع الملف هنا.
+    </p>
+
+
+    <div class="instruction-box">
+
+        <h3>
+            كيف أضيف بيانات من Excel؟
+        </h3>
+
+        <p>
+            استخدم اسم العمود بين
+            <strong>&lt;&lt; &gt;&gt;</strong>.
+        </p>
+
+        <div class="example">
+
+            <div>
+                السيد/ة
+                <strong>&lt;&lt;Name&gt;&gt;</strong>،
+            </div>
+
+            <br>
+
+            <div>
+                نتواصل معكم بخصوص شركة
+                <strong>&lt;&lt;Company&gt;&gt;</strong>.
+            </div>
+
+        </div>
+
+        <p class="small-help">
+            سيقوم البرنامج بتغيير هذه الحقول تلقائياً
+            لكل شخص موجود في ملف Excel.
+        </p>
+
+    </div>
+
+
+    <div class="available-fields">
+
+        <h3>
+            الحقول المتاحة في ملفك
+        </h3>
+
+        <p>
+            يمكنك نسخ أي حقل من هذه الحقول واستخدامه
+            داخل ملف Word:
+        </p>
+
+        <div class="field-tags">
+
+            {% for column in columns %}
+
+                <button
+                    type="button"
+                    class="field-tag"
+                    onclick="copyField('<<{{ column }}>>', this)"
+                >
+                    &lt;&lt;{{ column }}&gt;&gt;
+                </button>
+
+            {% endfor %}
+
+        </div>
+
+        <div
+            id="copy-message"
+            class="copy-message"
+        ></div>
+
+    </div>
+
+
+    <form
+        method="POST"
+        enctype="multipart/form-data"
+    >
+
+        <label class="upload-box">
+
+            <span class="upload-icon">
+                ↑
+            </span>
+
+            <strong>
+                اختر ملف Word
+            </strong>
+
+            <span id="word-file-name">
+                لم يتم اختيار ملف
+            </span>
+
+            <input
+                type="file"
+                name="word_file"
+                accept=".docx"
+                required
+                onchange="showFileName(this, 'word-file-name')"
+            >
+
+        </label>
+
+
+        <div class="button-row">
+
+            <a
+                href="{{ url_for('step1') }}"
+                class="secondary-btn"
+            >
+                السابق
+            </a>
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+                التالي
+                <span>←</span>
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
